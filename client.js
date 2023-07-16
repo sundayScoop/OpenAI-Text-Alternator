@@ -3,12 +3,11 @@ import fetch from "node-fetch";
  * 
  * @param {string} promptString 
  * @param {string} apiKey 
- * @returns {string}
  */
 export default async function send(promptString, apiKey){
     const bodyJSON = {
         model: "gpt-3.5-turbo",
-        messages: [{"role": "system", "content": "You are a helpful assistant"}, {"role": "user", "content": promptString}],
+        messages: [{"role": "system", "content": "You are a helpful assistant that alters text messages. You never speak directly to the user."}, {"role": "user", "content": promptString}],
         temperature: 0.8
     }
 
@@ -20,6 +19,8 @@ export default async function send(promptString, apiKey){
         method: 'POST',
         body: JSON.stringify(bodyJSON)
     });
+
+    if(!response.ok) throw Error("It f'd up");
     
     const json = await response.json();
 
